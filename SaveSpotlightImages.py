@@ -3,19 +3,19 @@ from PIL import Image
 from transformers import BlipProcessor, BlipForConditionalGeneration
 import time
 
-# Dossiers source et destination
+# Source and destination directories
 source_dir = r"C:\Users\kelt_\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets"
 destination_dir = r"C:\Users\kelt_\Pictures\WindowsSpotlightRenamed"
 
-# Modèle local BLIP
+# Local BLIP model
 model_path = r"C:\Models\blip-image-captioning-base"
 
-# Vérifie si le dossier de destination existe, sinon le crée
+# Check if the destination folder exists, otherwise create it
 if not os.path.exists(destination_dir):
     os.makedirs(destination_dir)
 
 def generate_description(image_path):
-    """Génère une description pour une image donnée."""
+    """Generate a description for a given image."""
     try:
         with Image.open(image_path) as image:
             image = image.convert("RGB")
@@ -24,11 +24,11 @@ def generate_description(image_path):
             description = processor.decode(caption[0], skip_special_tokens=True)
             return description.replace(" ", "_").replace(",", "").replace(".", "").replace("'", "").lower()
     except Exception as e:
-        print(f"Erreur lors de la description de l'image {image_path}: {e}")
+        print(f"Error generating description for the image {image_path}: {e}")
         return None
 
 def wait_for_file(file_path, retries=5, delay=1):
-    """Attendre que le fichier soit disponible pour lecture/écriture."""
+    """Wait until the file is available for read/write."""
     for _ in range(retries):
         try:
             with open(file_path, "rb"):
@@ -38,57 +38,57 @@ def wait_for_file(file_path, retries=5, delay=1):
     return False
 
 def process_images():
-    """Parcourir les fichiers source et renommer les images en mode paysage."""
+    """Iterate through the source files and rename landscape images."""
     for filename in os.listdir(source_dir):
         file_path = os.path.join(source_dir, filename)
 
-        if os.path.isfile(file_path) and os.path.getsize(file_path) > 100 * 1024:  # Ignorer les petits fichiers
+        if os.path.isfile(file_path) and os.path.getsize(file_path) > 100 * 1024:  # Ignore small files
             temp_image_path = os.path.join(destination_dir, filename + ".tmp.jpg")
 
-            # Copier le fichier temporairement
+            # Temporarily copy the file
             try:
-                # Attendre que le fichier soit libéré
+                # Wait for the file to be released
                 if not wait_for_file(file_path):
-                    print(f"Le fichier {file_path} est verrouillé. Ignoré.")
+                    print(f"The file {file_path} is locked. Skipped.")
                     continue
 
                 with open(file_path, "rb") as src, open(temp_image_path, "wb") as dst:
                     dst.write(src.read())
 
-                # Vérifier les dimensions de l'image
+                # Check the image dimensions
                 try:
                     img = Image.open(temp_image_path)
-                    if img.width > img.height:  # Vérifie que l'image est en mode paysage
+                    if img.width > img.height:  # Check if the image is in landscape mode
                         new_name = generate_description(temp_image_path)
-                        img.close()  # Fermer explicitement l'image
+                        img.close()  # Explicitly close the image
                         if new_name:
                             new_file_path = os.path.join(destination_dir, new_name + ".jpg")
-                            os.replace(temp_image_path, new_file_path)  # Renommer avec remplacement sécurisé
-                            print(f"Image renommée : {new_file_path}")
+                            os.replace(temp_image_path, new_file_path)  # Rename with secure replacement
+                            print(f"Image renamed: {new_file_path}")
                         else:
-                            print(f"Aucune description générée pour l'image {filename}.")
+                            print(f"No description generated for the image {filename}.")
                             os.remove(temp_image_path)
                     else:
-                        print(f"L'image {filename} n'est pas en mode paysage. Ignorée.")
-                        img.close()  # Fermer explicitement l'image
+                        print(f"The image {filename} is not in landscape mode. Skipped.")
+                        img.close()  # Explicitly close the image
                         os.remove(temp_image_path)
                 except Exception as e:
-                    print(f"Erreur lors du traitement de l'image {file_path}: {e}")
+                    print(f"Error processing the image {file_path}: {e}")
                     if os.path.exists(temp_image_path):
-                        os.remove(temp_image_path)  # Nettoyer les fichiers temporaires
+                        os.remove(temp_image_path)  # Clean up temporary files
             except Exception as e:
-                print(f"Erreur lors de la copie du fichier {file_path}: {e}")
+                print(f"Error copying the file {file_path}: {e}")
 
 if __name__ == "__main__":
-    # Charger le modèle BLIP
+    # Load the BLIP model
     try:
-        print("Chargement du modèle BLIP...")
+        print("Loading the BLIP model...")
         processor = BlipProcessor.from_pretrained(model_path)
         model = BlipForConditionalGeneration.from_pretrained(model_path)
-        print("Modèle BLIP chargé avec succès.")
+        print("BLIP model successfully loaded.")
     except Exception as e:
-        print(f"Erreur lors du chargement du modèle BLIP : {e}")
+        print(f"Error loading the BLIP model: {e}")
         exit(1)
 
-    # Traiter les images
+    # Process the images
     process_images()
