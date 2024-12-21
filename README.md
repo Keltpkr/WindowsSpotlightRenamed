@@ -3,7 +3,7 @@ Python script that get Spotlight pictures in a temp folder. Analyse them with IA
 ### 
 ### 
 
-# BLIP Model Setup Guide
+## BLIP Model Setup Guide
 
 ## Required Files for BLIP
 
