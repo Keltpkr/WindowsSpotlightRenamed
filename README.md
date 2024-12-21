@@ -95,13 +95,13 @@ C:\Users\<YourUsername>\Pictures\WindowsSpotlightRenamed\
 
 ### Examples
 #### 1. A Large Rock Formation
-![A Large Rock Formation](a_large_rock_formation_resized.jpg)
+![A Large Rock Formation](downloadable_a_large_rock_formation_resized.jpg)
 
 #### 2. A View of a City at Night from a Hill
-![A View of a City at Night](a_view_of_a_city_at_night_from_a_hill_resized.jpg)
+![A View of a City at Night](downloadable_a_view_of_a_city_at_night_from_a_hill_resized.jpg)
 
 #### 3. The Rocky Coastline of the Mediterranean Island of Rhodes
-![Rocky Coastline](the_rocky_coastline_of_the_mediterranean_island_of_rhodes_resized.jpg)
+![Rocky Coastline](downloadable_the_rocky_coastline_of_the_mediterranean_island_of_rhodes_resized.jpg)
 
 ---
 
