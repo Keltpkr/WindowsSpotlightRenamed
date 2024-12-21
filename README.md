@@ -1,50 +1,51 @@
 # WindowsSpotlightRenamed
 Python script that get Spotlight pictures in a temp folder. Analyse them with IA and rename them with an accurate name 
+#
+#
+# BLIP Model Setup Guide
 
-# Guide de Configuration pour le Modèle BLIP
-
-## Fichiers Obligatoires pour BLIP
+## Required Files for BLIP
 
 ### `config.json`
-- Contient les paramètres de configuration du modèle.
-- Nécessaire pour que `BlipProcessor` et `BlipForConditionalGeneration` comprennent la structure du modèle.
+- Contains the model configuration parameters.
+- Required for `BlipProcessor` and `BlipForConditionalGeneration` to understand the model structure.
 
 ### `pytorch_model.bin`
-- Le fichier principal contenant les poids entraînés du modèle.
-- C'est souvent le fichier le plus volumineux (plusieurs centaines de Mo).
+- The main file containing the trained model weights.
+- This is often the largest file (several hundred MB).
 
 ### `tokenizer_config.json`
-- Contient la configuration utilisée pour le tokenizer (prétraitement des données textuelles).
+- Contains the configuration used for the tokenizer (text preprocessing).
 
 ### `special_tokens_map.json`
-- Une carte des tokens spéciaux (par exemple, `[CLS]`, `[SEP]`) utilisés par le tokenizer.
+- A map of special tokens (e.g., `[CLS]`, `[SEP]`) used by the tokenizer.
 
-### `vocab.txt` (ou fichier similaire, spécifique au modèle)
-- Le vocabulaire utilisé par le tokenizer pour convertir les mots en identifiants numériques.
+### `vocab.txt` (or a similar file specific to the model)
+- The vocabulary used by the tokenizer to convert words into numerical IDs.
 
 ### `preprocessor_config.json`
-- Spécifie comment le prétraitement des images est réalisé avant d'être envoyées au modèle.
+- Specifies how the images are preprocessed before being sent to the model.
 
 ---
 
-## Étapes pour Télécharger les Fichiers
+## Steps to Download the Files
 
-### 1. Accédez au Modèle sur Hugging Face
+### 1. Access the Model on Hugging Face
 - [Salesforce/blip-image-captioning-base](https://huggingface.co/Salesforce/blip-image-captioning-base).
 
-### 2. Téléchargez Chaque Fichier Individuellement
-- Cliquez sur les noms des fichiers mentionnés ci-dessus pour les télécharger.
+### 2. Download Each File Individually
+- Click on the file names mentioned above to download them.
 
-### 3. Créez un Dossier Local
-- Par exemple : `C:\Models\blip-image-captioning-base`.
+### 3. Create a Local Folder
+- For example: `C:\Models\blip-image-captioning-base`.
 
-### 4. Placez Tous les Fichiers dans ce Dossier
-- Assurez-vous que tous les fichiers téléchargés sont regroupés dans ce dossier.
+### 4. Place All Files in This Folder
+- Ensure all the downloaded files are grouped in this folder.
 
 ---
 
-## Structure du Dossier Après Téléchargement
-Votre dossier `C:\Models\blip-image-captioning-base` devrait contenir ces fichiers :
+## Folder Structure After Download
+Your folder `C:\Models\blip-image-captioning-base` should contain these files:
 
 ```
 C:\Models\blip-image-captioning-base\
@@ -59,25 +60,25 @@ C:\Models\blip-image-captioning-base\
 
 ---
 
-## Pourquoi Ces Fichiers Sont Nécessaires ?
+## Why Are These Files Necessary?
 
 ### `config.json`
-- Permet au modèle de savoir comment il a été configuré lors de son entraînement.
+- Enables the model to understand how it was configured during training.
 
 ### `pytorch_model.bin`
-- Contient les paramètres appris pendant l'entraînement.
+- Contains the parameters learned during training.
 
-### `preprocessor_config.json` et `tokenizer_config.json`
-- Aident à normaliser les images et les textes d'entrée pour qu'ils soient compatibles avec le modèle.
+### `preprocessor_config.json` and `tokenizer_config.json`
+- Help normalize the input images and text to be compatible with the model.
 
-### `special_tokens_map.json` et `vocab.txt`
-- Définit comment le texte est tokenisé pour générer ou comprendre des légendes.
+### `special_tokens_map.json` and `vocab.txt`
+- Define how text is tokenized to generate or understand captions.
 
 ---
 
-## Vérification Après Téléchargement
+## Verification After Download
 
-Lancez un petit script Python pour vérifier que le modèle est bien chargé :
+Run a small Python script to verify that the model is properly loaded:
 
 ```python
 from transformers import BlipProcessor, BlipForConditionalGeneration
@@ -87,10 +88,9 @@ model_path = r"C:\Models\blip-image-captioning-base"
 try:
     processor = BlipProcessor.from_pretrained(model_path)
     model = BlipForConditionalGeneration.from_pretrained(model_path)
-    print("Le modèle BLIP a été chargé avec succès.")
+    print("The BLIP model has been successfully loaded.")
 except Exception as e:
-    print(f"Erreur lors du chargement du modèle : {e}")
+    print(f"Error loading the model: {e}")
 ```
 
-### Si ce script fonctionne, vous êtes prêt à exécuter le script complet.
-
+### If this script works, you are ready to run the complete script.
